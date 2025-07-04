@@ -1,11 +1,15 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleEcomm", "ConsoleEcomm\ConsoleEcomm.csproj", "{059B2958-B8E0-43EA-8B0A-928F4B2DC54B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UI", "UI\UI.csproj", "{059B2958-B8E0-43EA-8B0A-928F4B2DC54B}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{BFAFD0CB-4F7A-416A-90B9-EB7BEC2E4D89}"
 	ProjectSection(SolutionItems) = preProject
 		compose.yaml = compose.yaml
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataAccess", "DataAccess\DataAccess.csproj", "{6907F0E8-CEB6-41C5-80B1-549824199BBE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain", "Domain\Domain.csproj", "{A87304BF-864E-4F95-A40D-481BEF792F91}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,5 +21,13 @@ Global
 		{059B2958-B8E0-43EA-8B0A-928F4B2DC54B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{059B2958-B8E0-43EA-8B0A-928F4B2DC54B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{059B2958-B8E0-43EA-8B0A-928F4B2DC54B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6907F0E8-CEB6-41C5-80B1-549824199BBE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6907F0E8-CEB6-41C5-80B1-549824199BBE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6907F0E8-CEB6-41C5-80B1-549824199BBE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6907F0E8-CEB6-41C5-80B1-549824199BBE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A87304BF-864E-4F95-A40D-481BEF792F91}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A87304BF-864E-4F95-A40D-481BEF792F91}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A87304BF-864E-4F95-A40D-481BEF792F91}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A87304BF-864E-4F95-A40D-481BEF792F91}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
