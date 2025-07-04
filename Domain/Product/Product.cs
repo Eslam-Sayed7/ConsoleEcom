@@ -6,6 +6,7 @@ public abstract class Product
     protected double UnitPrice; 
     protected int Quantity;
 
+    public double GetPrice() => UnitPrice;
     protected Product(string name, double unitPrice, int quantity = 1)
     {
         ArgumentNullException.ThrowIfNull(name);

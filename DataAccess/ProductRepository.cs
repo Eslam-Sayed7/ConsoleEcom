@@ -3,7 +3,7 @@ using Domain.Product;
 
 namespace DataAccess;
 
-public class ProductRepository
+public class ProductRepository : IProductRepository
 {
     private IList<ShippableExpirableProduct> _shippableExpirableProducts = new List<ShippableExpirableProduct>()
     {
@@ -28,4 +28,7 @@ public class ProductRepository
     public IEnumerable<ShippableExpirableProduct> GetShippableExpirableProducts() => _shippableExpirableProducts;
     public IEnumerable<ShippableProduct> GetShippableProducts() => _shippableProducts;
     public IEnumerable<ExpirableProduct> GetExpirableProducts() => _expirableProductsproducts;
+    public ProductRepository()
+    {
+    }
 }
