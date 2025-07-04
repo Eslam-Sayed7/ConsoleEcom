@@ -8,6 +8,7 @@
 
     <ItemGroup>
       <Folder Include="CartService\" />
+      <Folder Include="Customer\" />
       <Folder Include="ShippingService\" />
     </ItemGroup>
 
