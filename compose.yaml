@@ -1,0 +1,7 @@
+﻿services:
+  consoleecomm:
+    image: consoleecomm
+    build:
+      context: .
+      dockerfile: ConsoleEcomm/Dockerfile
+
