@@ -13,7 +13,7 @@ public static class OrderHelperMethods
             }
 
             Console.WriteLine(
-                $"Product ID: {item.OrderItemName}, Quantity: {item.GetQuantity()}, Total Price: {item.TotalPrice}");
+                $"Product ID: {item.GetName()}, Quantity: {item.GetQuantity()}, Total Price: {item.TotalPrice}");
         }
     }
     

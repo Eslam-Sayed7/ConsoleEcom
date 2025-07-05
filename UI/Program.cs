@@ -37,6 +37,7 @@ public class Program
                     home.ViewCustomers();
                     break;
                 case "5":
+                    home.ViewShippings();
                     break;
                 case "6":
                     home.PrintCartSummary();

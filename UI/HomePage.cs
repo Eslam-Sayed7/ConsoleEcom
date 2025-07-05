@@ -1,5 +1,6 @@
 using System.Reflection.Metadata.Ecma335;
 using ConsoleEcomm.Printer;
+using Domain;
 using Domain.CartService;
 using Domain.Customer;
 using Domain.Ordering;
@@ -17,6 +18,8 @@ public class HomePage
         ArgumentNullException.ThrowIfNull(services._productRepository);
         ArgumentNullException.ThrowIfNull(services._productService);
         ArgumentNullException.ThrowIfNull(services._shippingService);
+        ArgumentNullException.ThrowIfNull(services._cartRepository);
+        ArgumentNullException.ThrowIfNull(services._cartService);
     }
 
     public void ListProducts()
@@ -89,6 +92,11 @@ public class HomePage
             }
             if (input?.ToLower() == "done")
             {
+                if (order.GetOrderItems().Count == 0)
+                {
+                    Console.WriteLine("No items added to the order. Exiting order creation.");
+                    return null;
+                }
                 break;
             }
             if (int.TryParse(input, out int productId))
@@ -121,7 +129,7 @@ public class HomePage
                     orderItem.SetQuantity(quantity);
                     order.AddOrderItem(orderItem);
                     _services._productService.UpdateProductQuantity(productId, available - quantity );
-                    Console.WriteLine($"Added {orderItem.OrderItemName} to your order.");
+                    Console.WriteLine($"Added {orderItem.GetName()} to your order.");
                 }
                 else
                 {
@@ -140,6 +148,10 @@ public class HomePage
     {
         var customer = MakeCustomer();
         var order = MakeOrder();
+        if (order == null)
+        {
+            return null;
+        }
         var cart = new Cart(customer.GetCustomerId() ,order );
         customer.UpdateBalance(-1 * cart.GetTotalPrice());
         _services._cartRepository.AddCart(cart);
@@ -175,7 +187,7 @@ public class HomePage
         {
             if (item.IsShippable)
             {
-                Console.WriteLine($"{item.GetQuantity()}X {item.OrderItemName}, , weight: {item.GetWeight() * item.GetQuantity()} g");
+                Console.WriteLine($"{item.GetQuantity()}X {item.GetName()}, , weight: {item.GetWeight() * item.GetQuantity()} g");
                 totalWeight += item.GetWeight() * item.GetQuantity();
             }
         }
@@ -184,7 +196,7 @@ public class HomePage
         shippingPrice = totalWeight / 1000 * 5; // Note: 5$ per kg
         foreach (var item in cart.GetOrder().GetOrderItems())
         {
-            Console.WriteLine($"{item.GetQuantity()}X {item.OrderItemName}, , Price: ${item.TotalPrice()}");
+            Console.WriteLine($"{item.GetQuantity()}X {item.GetName()}, , Price: ${item.TotalPrice()}");
             totalPrice += item.TotalPrice();
         }
         Console.WriteLine($"-----------------------");
@@ -218,8 +230,15 @@ public class HomePage
         _services._printer.PrintMessages(printMessage);
     }
 
-    public void PrintShippings()
+ public void ViewShippings()
     {
+        var carts = _services._cartRepository.GetAllCarts();
+        var shippableOrders = new List<OrderItem>();
+        foreach (var cart in carts)
+        {
+            shippableOrders.AddRange(cart.order.GetOrderItems().Where(item => item.IsShippable));
+        }
+        _services._shippingService.ShipOrders(shippableOrders);
     }
 
 }

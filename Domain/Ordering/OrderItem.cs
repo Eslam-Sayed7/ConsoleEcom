@@ -18,7 +18,7 @@ public class OrderItem
     
     public void SetQuantity(int quantity) => _quantity = quantity;
     public int GetQuantity() => _quantity;
-    public string OrderItemName => _orderItemName;
+    public string GetName() => _orderItemName;
     public bool IsShippable => _isShippable; 
 
     public double TotalPrice()

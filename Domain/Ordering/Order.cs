@@ -14,7 +14,10 @@ public class Order
     public IList<OrderItem> GetOrderItems()
     {
         if (_items.Count == 0)
-            throw new InvalidOperationException("No items in the order.");
+        {
+            Console.WriteLine("No items in the order.");
+            return null;
+        }
 
         return _items;
     }
