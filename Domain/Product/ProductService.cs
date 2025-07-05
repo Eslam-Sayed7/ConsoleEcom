@@ -1,19 +1,17 @@
 using System.Collections;
 using DataAccess;
 using Domain.Customer;
+using Domain.Ordering;
 
 namespace Domain.Product;
 
 public class ProductService : IProductService 
 {
     private readonly IProductRepository _productRepository;
-    private readonly IUserContext _userContext;
 
-    public ProductService(IUserContext userContext, IProductRepository productRepository)
+    public ProductService(IProductRepository productRepository)
     {
-        ArgumentNullException.ThrowIfNull(userContext);
         ArgumentNullException.ThrowIfNull(productRepository);
-        _userContext = userContext;
         _productRepository = productRepository;
     }
 
@@ -26,13 +24,20 @@ public class ProductService : IProductService
     public IEnumerable<ExpirableProduct> GetExpirableProducts() 
         => _productRepository.GetExpirableProducts();
 
-    // public IEnumerable<Product> ListProducts()
-    // {
-    //     var shippable = _productRepository.GetShippableProducts();
-    //     var shippableExpirableProducts = _productRepository.GetShippableExpirableProducts();
-    //     var expirableProducts = _productRepository.GetExpirableProducts();
-    // }
-    public void Initialize()
+    public OrderItem GetProductById(int id)
     {
+        return _productRepository.GetProductById(id);
+    }
+
+    public bool UpdateProductQuantity(int productId, int quantity)
+    {
+        if (quantity < 0) throw new ArgumentOutOfRangeException(nameof(quantity), "Quantity cannot be negative.");
+        return _productRepository.UpdateProductQuantity(productId, quantity);
+    }
+
+    public int GetProductCount(int id)
+    {
+        if (id < 0) throw new ArgumentOutOfRangeException(nameof(id), "Invalid product ID");
+        return _productRepository.GetProductCount(id);
     }
 }
