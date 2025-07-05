@@ -17,6 +17,7 @@ public class DIContainer
     
     //Todo: why readonly can usercontext be chanaged with every user ?
     public  IProductRepository _productRepository;
+    public ICustomerContextRepository CustomerContextRepository;
     public  IProductService _productService;
     public  ICartService _cartService;
     public readonly ICartRepository _cartRepository;
@@ -25,6 +26,7 @@ public class DIContainer
     
     public DIContainer()
     {
+        CustomerContextRepository = new CustomerContextRepository();
         _cartRepository = new CartRepository();
         _productRepository = new ProductRepository();
         _productService = new ProductService( _productRepository );

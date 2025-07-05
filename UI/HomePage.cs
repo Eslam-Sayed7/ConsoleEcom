@@ -141,17 +141,84 @@ public class HomePage
         var customer = MakeCustomer();
         var order = MakeOrder();
         var cart = new Cart(customer.GetCustomerId() ,order );
-        return new UserContext(customer, cart);
-    } 
-    public void PrintCustomerCart()
-    {
+        customer.UpdateBalance(-1 * cart.GetTotalPrice());
+        _services._cartRepository.AddCart(cart);
+        var cntxt = new UserContext(customer, cart);
+        _services.CustomerContextRepository.AddCustomer(cntxt);
+        return cntxt;
     }
 
-    public void PrintOrderSummary()
+    public void PrintCartSummary( )
     {
+        Cart cart;
+        Console.WriteLine("write cart id to print summary");
+        
+        var input = Console.ReadLine();
+        while (string.IsNullOrWhiteSpace(input) || !Guid.TryParse(input, out Guid cartId))
+        {
+            Console.WriteLine("Invalid cart ID.");
+            input = Console.ReadLine();
+        } 
+        cart = _services._cartRepository.GetCartById(Guid.Parse(input));
+        Console.WriteLine("Cart not found.");
+        
+        if(cart.order == null || cart.order.GetOrderItems().Count == 0)
+        {
+            Console.WriteLine("Cart is empty.");
+            return;
+        }
+        Console.WriteLine($"Cart ID: {cart.GetCartId()}");
+        Console.WriteLine($"** shipment Notice **");
+        double totalWeight = 0 , totalPrice = 0 , shippingPrice = 0;
+        
+        foreach (var item in cart.GetOrder().GetOrderItems())
+        {
+            if (item.IsShippable)
+            {
+                Console.WriteLine($"{item.GetQuantity()}X {item.OrderItemName}, , weight: {item.GetWeight() * item.GetQuantity()} g");
+                totalWeight += item.GetWeight() * item.GetQuantity();
+            }
+        }
+        
+        Console.WriteLine($"Total Weight: {totalWeight} g");
+        shippingPrice = totalWeight / 1000 * 5; // Note: 5$ per kg
+        foreach (var item in cart.GetOrder().GetOrderItems())
+        {
+            Console.WriteLine($"{item.GetQuantity()}X {item.OrderItemName}, , Price: ${item.TotalPrice()}");
+            totalPrice += item.TotalPrice();
+        }
+        Console.WriteLine($"-----------------------");
+        Console.WriteLine($"Subtotal: {totalPrice}");
+        Console.WriteLine($"Shipping: { shippingPrice}");    // Note: 5$ per kg
+        totalPrice += shippingPrice;
+        Console.WriteLine($"Total Price: ${totalPrice}");
         
     }
-    public void PrintShippingOptions()
+    public void ViewCarts()
+    {
+        var customerContexts = _services.CustomerContextRepository.GetAllCustomers();
+       Console.WriteLine("Available Carts:");
+        
+        foreach (var ctx in customerContexts)
+        {
+            Console.WriteLine($"userId: {ctx.GetUserId()}  - CartId: {ctx.GetCart().GetCartId()}");
+        }
+    }
+    public void ViewCustomers()
+    {
+        var printMessage = new PrintMessage();
+        var customerContexts = _services.CustomerContextRepository.GetAllCustomers();
+        printMessage.AddMessage("Available Customers:");
+        printMessage.AddMessage("CustomerId - Name - Balance - Address");
+        
+        foreach (var ctx in customerContexts)
+        {
+            printMessage.AddMessage($"{ctx.GetUserId()}  -  {ctx.GetUserName()} (${ctx.GetUserBalance()}) - {ctx.GetUserAddress()}");
+        }
+        _services._printer.PrintMessages(printMessage);
+    }
+
+    public void PrintShippings()
     {
     }
 

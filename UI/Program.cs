@@ -15,7 +15,11 @@ public class Program
             Console.WriteLine("Please select an option:");
             Console.WriteLine("1. View Products");
             Console.WriteLine("2. Make Order");
-            Console.WriteLine("10. Exit");
+            Console.WriteLine("3. View Carts");
+            Console.WriteLine("4. View Customers");
+            Console.WriteLine("5. View Shipping");
+            Console.WriteLine("6. View cart summary");
+            Console.WriteLine("0. Exit");
             
             var input = Console.ReadLine();
             switch (input)
@@ -26,7 +30,18 @@ public class Program
                 case "2":
                     home.MakeCustomerCartContext();
                     break;
-                case "10":
+                case "3":
+                    home.ViewCarts();
+                    break;
+                case "4":
+                    home.ViewCustomers();
+                    break;
+                case "5":
+                    break;
+                case "6":
+                    home.PrintCartSummary();
+                    break;
+                case "0":
                     RUNNING = false;
                     break;
                 default:

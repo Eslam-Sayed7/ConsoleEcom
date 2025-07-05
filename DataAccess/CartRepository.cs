@@ -6,6 +6,8 @@ public class CartRepository : ICartRepository
 {
     private readonly List<Cart> _carts = new List<Cart>();
 
+    public IEnumerable<Cart> GetAllCarts() => _carts;
+
     public Cart GetCartById(Guid cartId)
     {
         return _carts.FirstOrDefault(c => c.Id == cartId);

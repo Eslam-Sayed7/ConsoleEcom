@@ -12,4 +12,14 @@ public class Cart
             UserId = userId;
             this.order = order;
     }
+    public Guid GetCartId() => Id;
+    public Order GetOrder() => order;
+    
+    public double GetTotalPrice()
+    {
+        if (order == null || order.GetOrderItems() == null)
+            return 0;
+        return order.GetOrderItems().Sum(item => item.TotalPrice());
+    }
+    
 }

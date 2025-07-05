@@ -13,4 +13,10 @@ public class UserContext : IUserContext
       this.cart = cart;
    }
    public Guid GetUserId() => customer.GetCustomerId();
+    public string GetUserName() => customer.GetCustomerName();
+    public double GetUserBalance() => customer.GetCustomerBalance();
+    public string GetUserAddress() => customer.GetCustomerAddress();
+    public Cart GetCart() => cart;
+    public Guid GetCartId() => cart.GetCartId();
+    
 }
