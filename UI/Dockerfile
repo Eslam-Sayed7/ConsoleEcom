@@ -1,21 +1,18 @@
-﻿FROM mcr.microsoft.com/dotnet/runtime:9.0 AS base
-USER $APP_UID
+﻿FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
+
 WORKDIR /app
 
-FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
-ARG BUILD_CONFIGURATION=Release
-WORKDIR /src
-COPY ["ConsoleEcomm/ConsoleEcomm.csproj", "ConsoleEcomm/"]
-RUN dotnet restore "ConsoleEcomm/ConsoleEcomm.csproj"
-COPY . .
-WORKDIR "/src/ConsoleEcomm"
-RUN dotnet build "./ConsoleEcomm.csproj" -c $BUILD_CONFIGURATION -o /app/build
+COPY ConsoleEcomm.sln ./
+COPY Domain/Domain.csproj ./Domain/
+COPY DataAccess/DataAccess.csproj ./DataAccess/
+COPY UI/UI.csproj ./UI/
 
-FROM build AS publish
-ARG BUILD_CONFIGURATION=Release
-RUN dotnet publish "./ConsoleEcomm.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
+RUN dotnet restore
 
-FROM base AS final
+COPY . . 
+RUN dotnet publish UI/UI.csproj -c Release -o /app/publish --no-restore
+
+FROM mcr.microsoft.com/dotnet/runtime:9.0 AS runtime
 WORKDIR /app
-COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "ConsoleEcomm.dll"]
+COPY --from=build /app/publish .
+ENTRYPOINT ["dotnet", "UI.dll"]
